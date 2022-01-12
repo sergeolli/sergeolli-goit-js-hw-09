@@ -1,3 +1,4 @@
+import Notiflix from 'notiflix';
 const refs = {
   form: document.querySelector('form'),
 }
@@ -7,22 +8,22 @@ refs.form.addEventListener('submit', (e) => {
   let delay = Number(e.currentTarget.delay.value)
   let step = Number(e.currentTarget.step.value)
   let amount = Number(e.currentTarget.amount.value)
-  position = 0;
-  isClearInterval = setInterval(() => {
+  let position = 0;
+  e.target.submit = setInterval(() => {
     position += 1;
     delay += step;
     if (position >= amount) {
-      clearInterval(isClearInterval)
+      clearInterval(e.target.submit)
     }
     createPromise(position, delay)
       .then(({ position, delay }) => {
-        console.log(`✅ Fulfilled promise ${position} in ${delay}ms`);
+        Notiflix.Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
       })
       .catch(({ position, delay }) => {
-        console.log(`❌ Rejected promise ${position} in ${delay}ms`);
+        Notiflix.Notify.warning(`❌ Rejected promise ${position} in ${delay}ms`);
       })
    
-  }, delay);
+  }, step);
   
 
 
